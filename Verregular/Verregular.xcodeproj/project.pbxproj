@@ -18,6 +18,10 @@
 		286E2A262B27577C00768CB7 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 286E2A252B27577C00768CB7 /* SnapKit */; };
 		286E2A282B27577C00768CB7 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 286E2A272B27577C00768CB7 /* SnapKit-Dynamic */; };
 		28988EAA2B27636D00D906A1 /* SelectVerbTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28988EA92B27636D00D906A1 /* SelectVerbTableViewCell.swift */; };
+		28988EAC2B27677700D906A1 /* UIView+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28988EAB2B27677700D906A1 /* UIView+Ex.swift */; };
+		28988EAE2B2767F400D906A1 /* UIStackView+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28988EAD2B2767F400D906A1 /* UIStackView+Ex.swift */; };
+		28988EB22B276B9400D906A1 /* IrregularVerbs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28988EB12B276B9400D906A1 /* IrregularVerbs.swift */; };
+		28988EB42B276BF600D906A1 /* Verb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28988EB32B276BF600D906A1 /* Verb.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +37,10 @@
 		286E2A1E2B27555A00768CB7 /* SelectVerbsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectVerbsViewController.swift; sourceTree = "<group>"; };
 		286E2A202B27557500768CB7 /* TrainVerbsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainVerbsViewController.swift; sourceTree = "<group>"; };
 		28988EA92B27636D00D906A1 /* SelectVerbTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectVerbTableViewCell.swift; sourceTree = "<group>"; };
+		28988EAB2B27677700D906A1 /* UIView+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ex.swift"; sourceTree = "<group>"; };
+		28988EAD2B2767F400D906A1 /* UIStackView+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Ex.swift"; sourceTree = "<group>"; };
+		28988EB12B276B9400D906A1 /* IrregularVerbs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrregularVerbs.swift; sourceTree = "<group>"; };
+		28988EB32B276BF600D906A1 /* Verb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Verb.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +92,8 @@
 			isa = PBXGroup;
 			children = (
 				286E2A132B2752EA00768CB7 /* String+Ex.swift */,
+				28988EAB2B27677700D906A1 /* UIView+Ex.swift */,
+				28988EAD2B2767F400D906A1 /* UIStackView+Ex.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -107,8 +117,9 @@
 		286E2A222B27557A00768CB7 /* Select */ = {
 			isa = PBXGroup;
 			children = (
-				286E2A1E2B27555A00768CB7 /* SelectVerbsViewController.swift */,
-				28988EA92B27636D00D906A1 /* SelectVerbTableViewCell.swift */,
+				28988EB02B276A1B00D906A1 /* Controller */,
+				28988EAF2B276A1200D906A1 /* View */,
+				28988EB52B276C3700D906A1 /* Model */,
 			);
 			path = Select;
 			sourceTree = "<group>";
@@ -119,6 +130,31 @@
 				286E2A202B27557500768CB7 /* TrainVerbsViewController.swift */,
 			);
 			path = Train;
+			sourceTree = "<group>";
+		};
+		28988EAF2B276A1200D906A1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				28988EA92B27636D00D906A1 /* SelectVerbTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		28988EB02B276A1B00D906A1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				286E2A1E2B27555A00768CB7 /* SelectVerbsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		28988EB52B276C3700D906A1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				28988EB12B276B9400D906A1 /* IrregularVerbs.swift */,
+				28988EB32B276BF600D906A1 /* Verb.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,6 +242,10 @@
 				286E2A212B27557500768CB7 /* TrainVerbsViewController.swift in Sources */,
 				286E2A002B27506200768CB7 /* AppDelegate.swift in Sources */,
 				286E2A1F2B27555A00768CB7 /* SelectVerbsViewController.swift in Sources */,
+				28988EB42B276BF600D906A1 /* Verb.swift in Sources */,
+				28988EAE2B2767F400D906A1 /* UIStackView+Ex.swift in Sources */,
+				28988EAC2B27677700D906A1 /* UIView+Ex.swift in Sources */,
+				28988EB22B276B9400D906A1 /* IrregularVerbs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
