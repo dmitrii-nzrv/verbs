@@ -19,6 +19,26 @@ final class TrainVerbsViewController: UIViewController {
         return view
     }()
     
+    private lazy var numberOfCurrentVerbLabel: UILabel = {
+        let label = UILabel()
+        
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .gray
+        label.text = "\(count)/ \(dataSource.count)"
+        
+        return label
+    }()
+    
+    private lazy var numberOfCurrentScoreLabel: UILabel = {
+        let label = UILabel()
+        
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .gray
+        label.text = "\(score)"
+        
+        return label
+    }()
+    
     private lazy var contentView: UIView = UIView()
     
     private lazy var infinitiveLabel: UILabel = {
@@ -27,7 +47,6 @@ final class TrainVerbsViewController: UIViewController {
         label.font = .boldSystemFont(ofSize: 28)
         label.textColor = .black
         label.textAlignment = .center
-        label.text = "Read".uppercased()
         
         return label
     }()
@@ -77,27 +96,101 @@ final class TrainVerbsViewController: UIViewController {
         button.backgroundColor = .systemGray5
         button.setTitle("Check".localized, for: .normal)
         button.setTitleColor(.black, for: .normal)
-        
+        button.addTarget(self, action: #selector(checkAction), for: .touchUpInside)
         return button
     }()
     
     // MARK: ~ Properties
     private let edgeInsets = 30
+    private let dataSource = IrregularVerbs.shared.selectedVerbs
     
+    private var score = 0 {
+            didSet {
+                numberOfCurrentScoreLabel.text = "Count: " + String(score)
+            }
+        }
+    private var currentVerb: Verb? {
+        guard dataSource.count > count else { return nil}
+        return dataSource[count]
+    }
+    
+    private var countCurrentVerb = 0 {
+           didSet {
+               numberOfCurrentVerbLabel.text = "\(countCurrentVerb)/\(dataSource.count)"
+           }
+       }
+    
+    private var count = 0 {
+        didSet {
+            infinitiveLabel.text = currentVerb?.infinitive
+            pastSimpleTextField.text = ""
+            pastParticipleField.text = ""
+            countCurrentVerb += 1
+        }
+    }
     // MARK: ~ Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Train verbs".localized
         
-        
         setupUI()
-        registerForKeyboardNotification()
-        unregisterForKeyboardNotification()
         hideKeyboardWhenTappedAround()
+        
+        infinitiveLabel.text = dataSource.first?.infinitive
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        unregisterForKeyboardNotification()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerForKeyboardNotification()
     }
     
     // MARK: ~ Private methods
+    
+    private func showAlert() {
+        let stringForAlert = "Score:" + "%d"
+        let message = String(format: stringForAlert, score)
+        let alert = UIAlertController(title: "The end",message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .cancel) { _ in
+            self.navigationController?.popViewController(animated: true) }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    @objc
+    private func checkAction() {
+        let isSecondAttepmt = checkButton.backgroundColor == .red
+        
+        if checkAnswers() {
+            if currentVerb?.infinitive == dataSource.last?.infinitive {
+                //navigationController?.popViewController(animated: true)
+                
+                score += isSecondAttepmt ? 0 : 1
+                showAlert()
+            } else {
+                checkButton.backgroundColor = .systemGray5
+                checkButton.setTitle("Ok", for: .normal)
+                
+                score += isSecondAttepmt ? 0 : 1
+            }
+            count += 1
+        } else {
+            checkButton.backgroundColor = .red
+            checkButton.setTitle("Try again".localized, for: .normal)
+        }
+    }
+    
+    private func checkAnswers() -> Bool {
+        pastSimpleTextField.text?.lowercased() == currentVerb?.pastSimple.lowercased() &&
+        pastParticipleField.text?.lowercased() == currentVerb?.pastParticiple.lowercased()
+    }
+    
     private func setupUI() {
         view.backgroundColor = .white
         
@@ -109,7 +202,9 @@ final class TrainVerbsViewController: UIViewController {
             pastSimpleTextField,
             pastParticipleLabel,
             pastParticipleField,
-            checkButton])
+            checkButton,
+            numberOfCurrentVerbLabel,
+            numberOfCurrentScoreLabel])
         
         setupConstraints()
     }
@@ -152,11 +247,18 @@ final class TrainVerbsViewController: UIViewController {
             make.top.equalTo(pastParticipleField.snp.bottom).offset(100)
             make.trailing.leading.equalToSuperview().inset(edgeInsets)
         }
+        
+        numberOfCurrentVerbLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(25)
+            make.leading.equalToSuperview().inset(30)
+        }
+        
+        numberOfCurrentScoreLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(25)
+            make.trailing.equalToSuperview().inset(30)
+        }
     }
 }
-
-    
-
 
 // MARK: ~ UITextFieldDelegate
 extension TrainVerbsViewController: UITextFieldDelegate {
@@ -174,10 +276,12 @@ extension TrainVerbsViewController: UITextFieldDelegate {
 private extension TrainVerbsViewController {
     func registerForKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func unregisterForKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     
     @objc

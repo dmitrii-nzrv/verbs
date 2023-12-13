@@ -9,17 +9,15 @@ import UIKit
 
 final class SelectVerbsViewController: UITableViewController {
     // MARK: ~ Properties
-    private var dataSource = IrregularVerbs()
-    
+    private var dataSource = IrregularVerbs.shared
     // MARK: ~ Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Select verbs".localized
+        dataSource.selectedVerbs = dataSource.verbs
         view.backgroundColor = .white
         tableView.register(SelectVerbTableViewCell.self, forCellReuseIdentifier: "SelectVerbTableViewCell")
-        
-        dataSource.configureVerbs()
     }
     
     // MARK: ~ Private methods
@@ -45,10 +43,10 @@ extension SelectVerbsViewController {
 }
 
 // MARK: ~ UITableViewDelegate
-
 extension SelectVerbsViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let verb = dataSource.verbs[indexPath.row]
+        
         if isSelected(verb: verb) {
             dataSource.selectedVerbs.removeAll(where: { $0.infinitive == verb.infinitive})
         } else {

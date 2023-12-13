@@ -57,10 +57,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-        
-        
     }
-
 
     // MARK: ~ Private nethods
     @objc
@@ -97,8 +94,5 @@ class HomeViewController: UIViewController {
         secondButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
         secondButton.widthAnchor.constraint(equalTo: firstButton.widthAnchor).isActive = true        
     }
-    
-    
-    
 }
 
