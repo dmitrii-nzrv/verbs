@@ -92,6 +92,9 @@ final class TrainVerbsViewController: UIViewController {
         
         
         setupUI()
+        registerForKeyboardNotification()
+        unregisterForKeyboardNotification()
+        hideKeyboardWhenTappedAround()
     }
     
     // MARK: ~ Private methods
@@ -157,5 +160,46 @@ final class TrainVerbsViewController: UIViewController {
 
 // MARK: ~ UITextFieldDelegate
 extension TrainVerbsViewController: UITextFieldDelegate {
-    // TODO:
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if pastSimpleTextField.isFirstResponder {
+            pastParticipleField.becomeFirstResponder()
+        } else {
+            scrollView.endEditing(true)
+        }
+        return true
+    }
+}
+
+// MARK: ~ Keyboard events
+private extension TrainVerbsViewController {
+    func registerForKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+    
+    func unregisterForKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc
+    func keyboardWillShow(_ notification: Notification) {
+        guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return}
+            
+        scrollView.contentInset.bottom = frame.height + 50
+    }
+    
+    @objc
+    func keyboardWillHide() {
+        scrollView.contentInset.bottom = .zero - 50
+    }
+    
+    func hideKeyboardWhenTappedAround() {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        
+        scrollView.addGestureRecognizer(recognizer)
+    }
+    
+    @objc
+    func hideKeyboard() {
+        scrollView.endEditing(true)
+    }
 }
